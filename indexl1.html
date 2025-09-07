@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ricomponi l'immagine</title>
+    <style>
+        #timer {
+            font-size: 2em;
+            text-align: center;
+            margin: 10px auto;
+            font-weight: bold;
+        }
+
+        #puzzle {
+            width: 400px;
+            height: 400px;
+            position: relative;
+            border: 2px solid #333;
+            margin: 20px auto;
+        }
+
+        .piece {
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            cursor: grab;
+            border: 1px solid #999;
+            background-image: url('/Users/stefanopepe/Desktop/challenge-operating-room/serv.png');
+            background-size: 400px 400px;
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h2 style="text-align:center;">Ricomponi l'immagine hai tempo un minuto</h2>
+    <div id="timer">60</div>
+    <div id="puzzle"></div>
+
+    <script>const puzzle = document.getElementById('puzzle');
+        const timer = document.getElementById('timer');
+        const size = 4; // 4x4
+        const pieceSize = 100; // px
+        let dragged = null;
+
+        // Timer 60 secondi countdown
+        let timeLeft = 60;
+        const countdown = setInterval(() => {
+            timeLeft--;
+            timer.textContent = timeLeft;
+            if (timeLeft <= 0) {
+                clearInterval(countdown);
+                alert('Tempo scaduto!');
+                // eventualmente puoi bloccare i pezzi o fare altro
+            }
+        }, 1000);
+
+        // Genera i 16 pezzi con posizione e background-position giusti
+        let pieces = [];
+
+        for (let row = 0; row < size; row++) {
+            for (let col = 0; col < size; col++) {
+                const piece = document.createElement('div');
+                piece.classList.add('piece');
+                piece.id = `p${row * size + col + 1}`;
+
+                // posizione iniziale casuale dentro il puzzle
+                const randomTop = Math.floor(Math.random() * (400 - pieceSize));
+                const randomLeft = Math.floor(Math.random() * (400 - pieceSize));
+                piece.style.top = randomTop + 'px';
+                piece.style.left = randomLeft + 'px';
+
+                // background-position: sposta la porzione giusta dell'immagine
+                piece.style.backgroundPosition = `-${col * pieceSize}px -${row * pieceSize}px`;
+
+                // rendiamo drag & drop
+                piece.setAttribute('draggable', 'true');
+
+                puzzle.appendChild(piece);
+                pieces.push(piece);
+            }
+        }
+
+        // Eventi drag & drop
+        pieces.forEach(piece => {
+            piece.addEventListener('dragstart', e => {
+                dragged = piece;
+                setTimeout(() => piece.style.visibility = 'hidden', 0);
+            });
+            piece.addEventListener('dragend', e => {
+                dragged.style.visibility = 'visible';
+                dragged = null;
+            });
+        });
+
+        puzzle.addEventListener('dragover', e => {
+            e.preventDefault();
+        });
+
+        puzzle.addEventListener('drop', e => {
+            e.preventDefault();
+            if (!dragged) return;
+
+            const rect = puzzle.getBoundingClientRect();
+            let x = e.clientX - rect.left;
+            let y = e.clientY - rect.top;
+
+            // Snap to grid 100x100
+            x = Math.floor(x / pieceSize) * pieceSize;
+            y = Math.floor(y / pieceSize) * pieceSize;
+
+            dragged.style.left = x + 'px';
+            dragged.style.top = y + 'px';
+        });</script>
+
+</body>
+</html>
+
