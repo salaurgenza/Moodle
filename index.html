@@ -40,33 +40,38 @@
 <body>
     <div id="sidebar">
         <h3>Lezioni</h3>
-        <div class="file-entry" onclick="openLesson('lezione1/index.html')">
+        <div class="file-entry" onclick="openLesson('lezione1/indexl1.html')">
             <img src="/Users/stefanopepe/Downloads/mini_moodle/icons8-chirurgia-64.png" alt="icona cartella"> Lezione 1
         </div>
-        <div class="file-entry" onclick="openLesson('lezione2/index.html')">
+        <div class="file-entry" onclick="openLesson('lezione2/indexl2.html')">
             <img src="/Users/stefanopepe/Downloads/mini_moodle/icons8-bisturi-50.png" alt="icona cartella"> Lezione 2
         </div>
-        <div class="file-entry" onclick="openLesson('lezione2/index.html')">
+        <div class="file-entry" onclick="openLesson('lezione2/indexl2.html')">
             <img src="/Users/stefanopepe/Downloads/mini_moodle/icons8-bisturi-50.png" alt="icona cartella"> Suture
         </div>
-        <div class="file-entry" onclick="openLesson('lezione2/index.html')">
+        <div class="file-entry" onclick="openLesson('lezione2/indexl2.html')">
             <img src="/Users/stefanopepe/Downloads/mini_moodle/icons8-bisturi-50.png" alt="icona cartella">Base
         </div>
-        <div class="file-entry" onclick="openLesson('lezione2/index.html')">
+        <div class="file-entry" onclick="openLesson('lezione2/indexl2.html')">
             <img src="/Users/stefanopepe/Downloads/mini_moodle/icons8-bisturi-50.png" alt="icona cartella"> Chirurgia Addominale
         </div>
-        <div class="file-entry" onclick="openLesson('lezione2/index.html')">
+        <div class="file-entry" onclick="openLesson('lezione2/indexl2.html')">
             <img src="/Users/stefanopepe/Downloads/mini_moodle/icons8-bisturi-50.png" alt="icona cartella"> Allestimento servitore
         </div>
     </div>
     <div id="content">
-        <iframe id="lessonFrame" src=""></iframe>
+        <div id="welcome" style="display:flex;justify-content:center;align-items:center;height:100%;background:#fff;">
+            <img src="control_room.png" alt="Benvenuto" style="max-width:80%;max-height:80%;">
+        </div>
+        <iframe id="lessonFrame" style="display:none;"></iframe>
     </div>
 
-    <script>
-        function openLesson(path) {
-            document.getElementById('lessonFrame').src = path;
-        }
-    </script>
+    <script>function openLesson(path) {
+            document.getElementById('welcome').style.display = 'none';
+            const frame = document.getElementById('lessonFrame');
+            frame.style.display = 'block';
+            frame.src = path;
+        }</script>
+
 </body>
 </html>
